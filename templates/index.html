@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Guessing Game</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>AI Guessing Game</h1>
+    <p>Enter a number between 1 and 4, and the AI will give you a clue. Can you guess what the AI is thinking of?</p>
+    <input id="prompt" type="text" placeholder="Enter a number between 1 and 4">
+    <button onclick="getClue()">Get Clue</button>
+    <p id="clue"></p>
+    <input id="guess" type="text" placeholder="Enter your guess">
+    <button onclick="checkGuess()">Check Guess</button>
+    <p id="result"></p>
+
+    <script>
+        function getClue() {
+            var prompt = $('#prompt').val();
+            $.post('/predict', JSON.stringify({prompt: prompt}), function(data) {
+                $('#clue').text('Clue: ' + data.clue);
+            }, 'json');
+        }
+
+        function checkGuess() {
+            var guess = $('#guess').val();
+            $.post('/check_guess', JSON.stringify({guess: guess}), function(data) {
+                $('#result').text('Result: ' + data.result);
+            }, 'json');
+        }
+    </script>
+</body>
+</html>
